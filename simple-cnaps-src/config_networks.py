@@ -9,7 +9,7 @@ Creates the set encoder, feature extractor and feature adaptation networks.
 """
 
 class ConfigureNetworks:
-    def __init__(self, pretrained_resnet_path, feature_adaptation, mt=False):
+    def __init__(self, pretrained_resnet_path, feature_adaptation, mt=False, pretrain=True):
 
         self.classifier = linear_classifier
 
@@ -23,7 +23,7 @@ class ConfigureNetworks:
 
         if feature_adaptation == "no_adaptation":
             self.feature_extractor = resnet18(
-                pretrained=True,
+                pretrained=pretrain,
                 pretrained_model_path=pretrained_resnet_path,
                 mt=mt
             )
@@ -31,7 +31,7 @@ class ConfigureNetworks:
 
         elif feature_adaptation == "film":
             self.feature_extractor = film_resnet18(
-                pretrained=True,
+                pretrained=pretrain,
                 pretrained_model_path=pretrained_resnet_path,
                 mt=mt
             )
@@ -44,7 +44,7 @@ class ConfigureNetworks:
 
         elif feature_adaptation == 'film+ar':
             self.feature_extractor = film_resnet18(
-                pretrained=True,
+                pretrained=pretrain,
                 pretrained_model_path=pretrained_resnet_path,
                 mt=mt
             )
@@ -56,9 +56,10 @@ class ConfigureNetworks:
                 z_g_dim=z_g_dim
             )
 
-        # Freeze the parameters of the feature extractor
-        for param in self.feature_extractor.parameters():
-            param.requires_grad = False
+        if pretrain:
+            # Freeze the parameters of the feature extractor
+            for param in self.feature_extractor.parameters():
+                param.requires_grad = False
 
     def get_encoder(self):
         return self.encoder

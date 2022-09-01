@@ -25,6 +25,7 @@ class SimpleCnaps(nn.Module):
         self.device = device
         self.use_two_gpus = use_two_gpus
         networks = ConfigureNetworks(pretrained_resnet_path=self.args.pretrained_resnet_path,
+                                     pretrain=self.args.pretrained,
                                      feature_adaptation=self.args.feature_adaptation, mt=mt)
         self.set_encoder = networks.get_encoder()
 
