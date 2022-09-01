@@ -133,7 +133,7 @@ class Meta(Dataset):
                 print('{}: load images into memory.'.format(Meta))
 
         target_path = target_path_root + '/{}'.format(folder_name)
-        print('{}: construct npy from target_path: {}'.format(Meta, target_path))
+        print('{}: construct images and memory from target_path: {}'.format(Meta, target_path))
 
         for root, folders, files in os.walk(target_path):
             subset_len += len([f for f in files if f.endswith('.jpg') or f.endswith('.JPG')])

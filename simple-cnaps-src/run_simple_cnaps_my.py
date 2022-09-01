@@ -5,7 +5,8 @@ import os
 import sys
 from utils import print_and_log, get_log_files, ValidationAccuracies, loss, aggregate_accuracy
 from simple_cnaps import SimpleCnaps
-from meta_dataset_reader import MetaDatasetReader
+# from meta_dataset_reader import MetaDatasetReader
+from datasets import DatasetReader
 
 NUM_TRAIN_TASKS = 200000
 NUM_VALIDATION_TASKS = 200
@@ -30,9 +31,9 @@ class Learner:
         self.device = torch.device(gpu_device if torch.cuda.is_available() else 'cpu')
         self.model = self.init_model()
         self.train_set, self.validation_set, self.test_set = self.init_data()
-        self.metadataset = MetaDatasetReader(self.args.data_path, self.args.mode, self.train_set, self.validation_set,
-                                             self.test_set, self.args.max_way_train, self.args.max_way_test,
-                                             self.args.max_support_train, self.args.max_support_test, self.args.shuffle_dataset)
+        self.metadataset = DatasetReader(self.args.data_path, self.args.mode, self.train_set, self.validation_set,
+                                         self.test_set, self.args.max_way_train, self.args.max_way_test,
+                                         self.args.max_support_train, self.args.max_support_test, self.args.shuffle_dataset)
         self.loss = loss
         self.accuracy_fn = aggregate_accuracy
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.args.learning_rate)
@@ -210,12 +211,12 @@ class Learner:
         context_images_np, context_labels_np = task_dict['context_images'], task_dict['context_labels']
         target_images_np, target_labels_np = task_dict['target_images'], task_dict['target_labels']
 
-        context_images_np = context_images_np.transpose([0, 3, 1, 2])
+        # context_images_np = context_images_np.transpose([0, 3, 1, 2])     # already good shape [bs, 3, 84, 84]
         context_images_np, context_labels_np = self.shuffle(context_images_np, context_labels_np)
         context_images = torch.from_numpy(context_images_np)
         context_labels = torch.from_numpy(context_labels_np)
 
-        target_images_np = target_images_np.transpose([0, 3, 1, 2])
+        # target_images_np = target_images_np.transpose([0, 3, 1, 2])     # already good shape [bs, 3, 84, 84]
         target_images_np, target_labels_np = self.shuffle(target_images_np, target_labels_np)
         target_images = torch.from_numpy(target_images_np)
         target_labels = torch.from_numpy(target_labels_np)
