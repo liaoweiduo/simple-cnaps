@@ -475,7 +475,7 @@ class DatasetReader:
         self.validation_set_dict = {}
         self.test_set_dict = {}
 
-        preload = True
+        preload = False
         if platform.system() == 'Windows':
             num_workers = 0
         else:
