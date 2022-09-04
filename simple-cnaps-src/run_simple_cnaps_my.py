@@ -8,7 +8,7 @@ from simple_cnaps import SimpleCnaps
 # from meta_dataset_reader import MetaDatasetReader
 from datasets import DatasetReader
 
-NUM_TRAIN_TASKS = 200000
+NUM_TRAIN_TASKS = 110000
 NUM_VALIDATION_TASKS = 200
 NUM_TEST_TASKS = 600
 VALIDATION_FREQUENCY = 10000
@@ -72,9 +72,9 @@ class Learner:
         parser = argparse.ArgumentParser()
 
         parser.add_argument("--data_path", default="../../datasets", help="Path to dataset records.")
-        parser.add_argument("--pretrained", default=False, type=bool,
+        parser.add_argument("--pretrained", default=True, type=bool,
                             help="Whether to load pretrained feature extractor model.")
-        parser.add_argument("--pretrained_resnet_path", default="../model-checkpoints/pretrained_resnets/pretrained_resnet_meta_dataset.pt.tar",
+        parser.add_argument("--pretrained_resnet_path", default="../../pretrained/pretrained_resnet.pt.tar",
                             help="Path to pretrained feature extractor model.")
         parser.add_argument("--mode", choices=["train", "test", "train_test"], default="train_test",
                             help="Whether to run training only, testing only, or both training and testing.")
